@@ -635,4 +635,50 @@ function LoadQuestion() {
 
 }
 
+function next() {
+    let radiocheck = false
+    for (let i = 0; i < quizOptions.length; i++) {
+        if (quizOptions[i].checked) {
+            radiocheck = true
+            if (quizOptions[i].value === currentQuiz[count].answer) {
+                score++
+            }
+            count++;
+            quizOptions[i].checked = false
+            if (count < currentQuiz.length) {
+                LoadQuestion() ;
+            }
+            else {
+                quizWin.style.display = 'none'
+                resultWin.style.display = 'block'
+                resultQuiz.style.color = 'black'
+                resultQuiz.innerHTML = localStorage.getItem('selectedQuiz').toUpperCase() + " Quiz Completed!";
+                noOfQues.innerHTML = currentQuiz.length
+                noOfQues.style.color = 'black'
+                correctAns.innerHTML = score
+                let percentage = score / currentQuiz.length * 100
+                percentagevalue.innerHTML = Math.round(percentage) + '%'
+                if (percentage <= 33) {
+                    comment.innerHTML = 'You are Failed!'
+                    comment.style.color = 'red'
+                    percentagevalue.style.border = '1px solid red'
+
+                }
+                if (percentage > 33) {
+                    comment.innerHTML = "Congratulations you are pass!"
+                    comment.style.color = "green"
+                    percentagevalue.style.border = '1px solid green'
+
+                }
+                myAlert('success', 'Done', 'Quiz Completed')
+                currentQuiz = [];
+                localStorage.removeItem('selectedQuiz');
+
+            }
+        }
+    }
+    if (!radiocheck) {
+        myAlert('error', 'Error', 'Select Option')
+    }
+}
 
